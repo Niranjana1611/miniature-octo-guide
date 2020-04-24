@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Speed Tester </title>
+	<meta charset="UTF-8">
+	<script>
+		var defaultValue = [];
+		var newArr = [];
+		var t;
+		var timeInterval;
+		var t1 = new Date();
+
+		function startTime() {
+			var t2 = new Date();
+			t = t2 - t1;
+			document.getElementById('txt').innerHTML = t / 1000;
+			timeInterval = setTimeout(startTime, 100);
+		};
+
+		
+			var temp=localStorage.getItem('highscores');
+			var newArr=[];
+			newArr = JSON.parse(temp);
+			if (newArr == null){
+				newArr = []
+			}
+		function scoreCalculate() {
+			document.getElementById("lastScore").innerHTML = t / 1000;
+			newArr.push(t/1000);
+			newArr.sort(function (a, b) {
+				return a - b;
+			});
+			var highScore = [];
+			newArr.forEach(function (value, i) {
+				if (i < 5) {
+					highScore.push(value);
+				}
+			});
+
+			localStorage.setItem("highscores", JSON.stringify(highScore));
+			document.getElementById('t5').innerHTML = localStorage.getItem("highscores");
+			localStorage.getItem('highscores');
+		};
+
+
+		var a;
+		var i = 1;
+		//var check;
+		function add(a) {
+				
+			if(a==i && i<=20){
+				document.getElementById(a).innerHTML=i+20;
+				i++;
+			}
+			else if(a==i-20 && i>20){
+				document.getElementById(a).innerHTML=" ";
+						i++;
+			}
+			else{
+			alert("Wrong way! Go for new game");
+				newGame();
+				i=1;
+			}
+			if(i>=41){
+				scoreCalculate();
+				alert("Game Over! Go for new game!");
+				newGame();
+				i=0;
+				t1 = new Date;
+				startTime();
+			}
+		};
+
+		function pageLoad() {
+			document.querySelectorAll('.cell').forEach(function (item) {
+				defaultValue.push(item.innerText);
+			});
+			document.getElementById('t5').innerHTML = localStorage.getItem("highscores");
+			startTime();
+		}
+
+
+		function newGame(a = true) {
+			document.querySelectorAll('.cell').forEach(function (item) {
+				defaultValue.forEach(function (num) {
+					if (item.getAttribute('id') === num) {
+						item.innerHTML = num;
+					};
+				});
+			});
+			clearInterval(timeInterval);
+			t = null;
+			if (true) {
+				clearInterval(timeInterval);
+				document.getElementById("txt").innerHTML = '00.00';
+				console.log('t', t1);
+				t1 = new Date()
+				startTime();
+			}
+		};
+
+		var bleep = new Audio();
+		bleep.src="click.mp3";
+
+	</script>
+	<style>
+		.container {
+			background: black;
+			display: inline-block;
+			border: 5px solid black;
+		}
+
+		.grid {
+			display: grid;
+			grid-template-columns: repeat(5, 80px);
+			grid-template-rows: repeat(4, 80px);
+			grid-gap: 5px;
+		}
+
+		.cell {
+			justify-content: center;
+			align-items: center;
+			display: flex;
+			font-family: Arial;
+			font-size: 3rem;
+			font-weight: bold;
+			background: white;
+		}
+
+		#NewGm: text-align: left;
+	</style>
+</head>
+
+<body onload="pageLoad()" bgcolor="cyan">
+
+	<font style="text-align:left" size="5px">Your last score : </font>
+	<font id="lastScore" size="5px">00.00 <span>s</span></font>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<button onclick="newGame()" id="NewGm">
+		<font style="text-align:right" size="5px">New game</font>
+	</button><br>
+	<font style="text-align:left" size="5px">Top 5 : </font>
+	<font id="t5" size="5px">00.00 <span>s</span></font>
+
+	<center>
+		<font style="font-size:48px">&#9201;</font>
+	</center>
+
+	<h1 align="center"><span id="txt">00.00</span> s</h1>
+	<br><br>
+	<center>
+		<div class="container">
+			<div class="grid">
+				<button onclick="add(this.id)" id="11" class="cell" onmousedown="bleep.play()">11</button>
+				<button onclick="add(this.id)" id="5" class="cell" onmousedown="bleep.play()">5</button>
+				<button onclick="add(this.id)" id="16" class="cell" onmousedown="bleep.play()">16</button>
+				<button onclick="add(this.id)" id="2" class="cell" onmousedown="bleep.play()">2</button>
+				<button onclick="add(this.id)" id="10" class="cell" onmousedown="bleep.play()">10</button>
+				<button onclick="add(this.id)" id="13" class="cell" onmousedown="bleep.play()">13</button>
+				<button onclick="add(this.id)" id="8" class="cell" onmousedown="bleep.play()">8</button>
+				<button onclick="add(this.id)" id="18" class="cell" onmousedown="bleep.play()">18</button>
+				<button onclick="add(this.id)" id="4" class="cell" onmousedown="bleep.play()">4</button>
+				<button onclick="add(this.id)" id="6" class="cell" onmousedown="bleep.play()">6</button>
+				<button onclick="add(this.id)" id="7" class="cell" onmousedown="bleep.play()">7</button>
+				<button onclick="add(this.id)" id="12" class="cell" onmousedown="bleep.play()">12</button>
+				<button onclick="add(this.id)" id="19" class="cell" onmousedown="bleep.play()">19</button>
+				<button onclick="add(this.id)" id="1" class="cell" onmousedown="bleep.play()">1</button>
+				<button onclick="add(this.id)" id="9" class="cell" onmousedown="bleep.play()">9</button>
+				<button onclick="add(this.id)" id="20" class="cell" onmousedown="bleep.play()">20</button>
+				<button onclick="add(this.id)" id="15" class="cell" onmousedown="bleep.play()">15</button>
+				<button onclick="add(this.id)" id="14" class="cell" onmousedown="bleep.play()">14</button>
+				<button onclick="add(this.id)" id="17" class="cell" onmousedown="bleep.play()">17</button>
+				<button onclick="add(this.id)" id="3" class="cell" onmousedown="bleep.play()">3</button>
+			</div>
+		</div>
+	</center>
+</body>
+
+</html>
